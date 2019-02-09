@@ -1,0 +1,97 @@
+@import './theme.scss';
+
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+#appContent {
+    flex-grow: 1;
+}
+
+div {
+    display: flex;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.column, .row {
+    &.is-full {
+        flex-grow: 1;
+    }
+
+    &.is-thin {
+        flex-shrink: 1;
+    }
+}
+
+.is-scrollable {
+    overflow-y: auto;
+}
+
+.header {
+    padding: .7rem 1rem;
+}
+
+.todos {
+    background: $background-primary;
+
+    .todo {
+        cursor: pointer;
+        padding: .3rem 1rem;
+        align-items: center;
+
+        &:hover {
+            background: $background-primary-hover;
+        }
+
+        &.done {
+            color: #a6a6a6;
+            text-decoration: line-through;
+        }
+    }
+
+    .seperator {
+        height: 1px;
+        background: $seperator-color;
+
+        &:hover {
+            cursor: text;
+        }
+    }
+
+    .todo-input {
+        color: #c8c8c8;
+        font-style: italic;
+        cursor: text;
+        border-top: 1px solid $seperator-color;
+        border-bottom: 1px solid $seperator-color;
+    }
+
+    input {
+        border: none;
+        background: $background-primary;
+        font-family: $font-family;
+        outline: none;
+
+        &:hover {
+            background: $background-primary-hover;
+        }
+    }
+}
