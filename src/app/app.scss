@@ -47,18 +47,31 @@ div {
 
 .header {
     padding: .7rem 1rem;
+    flex-shrink: 0;
+    justify-content: center;
+    background: #fff5f7;
 }
 
 .todos {
     background: $background-primary;
+    margin-bottom: 0.5rem;
+    font-size: 90%;
+
+    .todo-container {
+        flex-shrink: 0;
+    }
 
     .todo {
         cursor: pointer;
-        padding: .3rem 1rem;
+        padding: .35rem 1rem;
         align-items: center;
 
         &:hover {
             background: $background-primary-hover;
+
+            input {
+                background: $background-primary-hover;
+            }
         }
 
         &.done {
@@ -82,6 +95,11 @@ div {
         cursor: text;
         border-top: 1px solid $seperator-color;
         border-bottom: 1px solid $seperator-color;
+        flex-shrink: 0;
+
+        button {
+            border: none;
+        }
     }
 
     input {
@@ -89,6 +107,7 @@ div {
         background: $background-primary;
         font-family: $font-family;
         outline: none;
+        font-size: 14.4px;
 
         &:hover {
             background: $background-primary-hover;

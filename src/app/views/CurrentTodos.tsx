@@ -4,6 +4,7 @@ import { TodoItem } from '../components/Todo';
 
 interface State {
     todos: TodoItem[]
+    hasActiveInput: boolean
 }
 
 export default class CurrentTodos extends React.Component<{}, State> {
@@ -12,18 +13,16 @@ export default class CurrentTodos extends React.Component<{}, State> {
 
         this.state = {
             todos: [
-                {id: 1, done: false, description: 'No that!!!'},
-                {id: 2, done: false, description: 'Finsih something'},
-                {id: 3, done: false, description: 'aybe this?'},
-                {id: 4, done: false, description: 'do that'},
-                {id: 5, done: false, description: 'poop'},
-            ]
+            ],
+            hasActiveInput: false
         }
 
         this.onDoneToggle = this.onDoneToggle.bind(this)
+        this.onNewTodo = this.onNewTodo.bind(this)
+        this.onCancelAddTodo = this.onCancelAddTodo.bind(this)
     }
 
-    onDoneToggle(todo: TodoItem, done: boolean) {
+    private onDoneToggle(todo: TodoItem, done: boolean) {
         if (!this.state.todos) {
             return
         }
@@ -35,12 +34,29 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.setState({todos: this.state.todos})
     }
 
+    private onNewTodo(todo: TodoItem, wasEnter: boolean) {
+        if (todo.description.trim().length > 0) {
+            this.setState({
+                todos: this.state.todos.concat(todo),
+                hasActiveInput: wasEnter
+            })
+        }
+    }
+
+    private onCancelAddTodo() {
+        this.setState({hasActiveInput: false})
+    }
+
     render() {
         return <div className="column is-full">
             <div className="row header">
-                Todos
+                Do it!
             </div>
-            <TodoList todos={this.state.todos} onDoneToggle={this.onDoneToggle} />
+            <TodoList todos={this.state.todos}
+                onDoneToggle={this.onDoneToggle}
+                onNewTodo={this.onNewTodo}
+                onCancelAddTodo={this.onCancelAddTodo}
+                hasActiveInput={this.state.hasActiveInput} />
         </div>
     }
 }

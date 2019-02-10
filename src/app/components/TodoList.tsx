@@ -5,6 +5,9 @@ import InlineEdit from './InlineEdit';
 interface Props {
     todos: TodoItem[]
     onDoneToggle: (todo: TodoItem, done: boolean) => void
+    onNewTodo: (todo: TodoItem, wasEnter: boolean) => void
+    onCancelAddTodo: () => void
+    hasActiveInput: boolean
 }
 
 export default class TodoList extends React.Component<Props> {
@@ -16,12 +19,12 @@ export default class TodoList extends React.Component<Props> {
     render() {
         return <div className="column is-full is-scrollable todos">
             {this.props.todos.map(todo => {
-                return <div key={todo.id} className="column">
+                return <div key={todo.description} className="column todo-container">
                     <div className="seperator"></div>
                     <Todo data={todo} onDoneToggle={this.props.onDoneToggle} />
                 </div>
             })}
-            <InlineEdit className="todo todo-input">Click to add item...</InlineEdit>
+            <InlineEdit editing={this.props.hasActiveInput} onCancel={this.props.onCancelAddTodo} className="todo todo-input" onComplete={e => this.props.onNewTodo({description: e.value, done: false}, e.wasEnter)}>Click to add item...</InlineEdit>
         </div>
     }
 }
