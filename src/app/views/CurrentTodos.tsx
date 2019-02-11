@@ -23,6 +23,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.onDoneToggle = this.onDoneToggle.bind(this)
         this.onNewTodo = this.onNewTodo.bind(this)
         this.onCancelAddTodo = this.onCancelAddTodo.bind(this)
+        this.onOrderUpdated = this.onOrderUpdated.bind(this)
     }
 
     componentDidMount() {
@@ -93,6 +94,13 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.setState({hasActiveInput: false})
     }
 
+    private onOrderUpdated(fromIndex: number, toIndex: number) {
+        let todos = this.state.todos.concat([])
+        let moving = todos.splice(fromIndex, 1)[0]
+        todos.splice(toIndex, 0, moving)
+        this.setState({todos: todos})
+    }
+
     render() {
         return <div className="column is-full">
             <div className="row header">
@@ -102,7 +110,8 @@ export default class CurrentTodos extends React.Component<{}, State> {
                 onDoneToggle={this.onDoneToggle}
                 onNewTodo={this.onNewTodo}
                 onCancelAddTodo={this.onCancelAddTodo}
-                hasActiveInput={this.state.hasActiveInput} />
+                hasActiveInput={this.state.hasActiveInput}
+                onOrderUpdated={this.onOrderUpdated} />
         </div>
     }
 }

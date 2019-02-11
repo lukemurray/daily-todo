@@ -63,7 +63,7 @@ div {
 
     .todo {
         cursor: pointer;
-        padding: .35rem 1rem;
+        padding: .35rem 0;
         align-items: center;
 
         &:hover {
@@ -78,6 +78,16 @@ div {
             color: #a6a6a6;
             text-decoration: line-through;
         }
+
+        .handle {
+            width: 1.5rem;
+            justify-content: center;
+            color: #838383;
+
+            &:hover {
+                cursor: grab;
+            }
+        }
     }
 
     .seperator {
@@ -90,6 +100,8 @@ div {
     }
 
     .todo-input {
+        padding-left: 1.5rem;
+        padding-right: .5rem;
         color: #c8c8c8;
         font-style: italic;
         cursor: text;
