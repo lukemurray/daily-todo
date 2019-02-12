@@ -3,7 +3,6 @@ const outPath = Path.join(__dirname, './build');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-
 module.exports = (env, argv) => {
     return {
         entry: "./src/app/app.tsx",
@@ -50,6 +49,7 @@ module.exports = (env, argv) => {
             }),
             new CopyWebpackPlugin([
                 'src/app/index.html',
+                {from: 'src/icons/*', to: 'icons/', flatten: true}
             ])
         ]
     }
