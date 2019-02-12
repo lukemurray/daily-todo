@@ -26,11 +26,11 @@ export default class TodoList extends React.Component<Props> {
     }
 
     render() {
-        return <div className="column is-full is-scrollable todos">
+        return <div className="column is-full todos">
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) =>
-                        <div className="column" ref={provided.innerRef}>
+                        <div className="column is-scrollable" ref={provided.innerRef}>
                             {this.props.todos.map((todo, index) => {
                                 return <Draggable key={todo.description} draggableId={todo.description} index={index}>
                                 {(provided, snapshot) =>
@@ -46,7 +46,7 @@ export default class TodoList extends React.Component<Props> {
                     </div>}
                 </Droppable>
             </DragDropContext>
-            <InlineEdit editing={this.props.hasActiveInput} onCancel={this.props.onCancelAddTodo} className="todo todo-input" onComplete={e => this.props.onNewTodo({description: e.value, done: false}, e.wasEnter)}>Click to add item...</InlineEdit>
+            <InlineEdit editing={this.props.hasActiveInput} onCancel={this.props.onCancelAddTodo} className="todo todo-input" onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.wasEnter)}>Click to add item...</InlineEdit>
         </div>
     }
 }

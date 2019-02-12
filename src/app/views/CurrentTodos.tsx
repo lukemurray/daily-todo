@@ -3,9 +3,15 @@ import TodoList from '../components/TodoList';
 import { TodoItem } from '../components/Todo';
 import * as fs from 'fs'
 
+interface TodoData {
+    currentTodos: TodoItem[]
+    previouslyDone?: {[key: string]: TodoItem[]}
+}
+
 interface State {
     todos: TodoItem[]
     hasActiveInput: boolean
+    previouslyDone?: {[key: string]: TodoItem[]}
 }
 
 const FilePath = './todos.json';
@@ -15,8 +21,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         super(props)
 
         this.state = {
-            todos: [
-            ],
+            todos: [],
             hasActiveInput: false
         }
 
@@ -24,13 +29,15 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.onNewTodo = this.onNewTodo.bind(this)
         this.onCancelAddTodo = this.onCancelAddTodo.bind(this)
         this.onOrderUpdated = this.onOrderUpdated.bind(this)
+        this.clearDone = this.clearDone.bind(this)
     }
 
     componentDidMount() {
         if (fs.existsSync(FilePath)) {
             let file = fs.readFileSync(FilePath, 'utf8')
             if (file) {
-                this.setState({todos: JSON.parse(file)})
+                let data: TodoData = JSON.parse(file)
+                this.setState({todos: data.currentTodos, previouslyDone: data.previouslyDone})
             }
         }
     }
@@ -63,7 +70,11 @@ export default class CurrentTodos extends React.Component<{}, State> {
     }
 
     private updateData() {
-        fs.writeFileSync(FilePath, JSON.stringify(this.state.todos))
+        let data: TodoData = {
+            currentTodos: this.state.todos,
+            previouslyDone: this.state.previouslyDone
+        }
+        fs.writeFileSync(FilePath, JSON.stringify(data))
     }
 
     private onDoneToggle(todo: TodoItem, done: boolean) {
@@ -75,7 +86,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         if (matchTodoIdx > -1) {
             let todos = this.state.todos.concat([])
             let matchTodo = Object.assign({}, todos[matchTodoIdx])
-            matchTodo.done = done
+            matchTodo.done = done ? new Date() : undefined
             todos.splice(matchTodoIdx, 1, matchTodo)
             this.setState({todos: todos})
         }
@@ -101,10 +112,28 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.setState({todos: todos})
     }
 
+    private clearDone() {
+        let todos = this.state.todos.concat([])
+        let doneTodos = todos.filter(t => t.done)
+        doneTodos.forEach(t => todos.splice(todos.indexOf(t), 1))
+
+        let cleared = new Date()
+        let previouslyDone = Object.assign({}, this.state.previouslyDone)
+        previouslyDone[cleared.toJSON()] = doneTodos
+
+        this.setState({previouslyDone: previouslyDone, todos: todos})
+    }
+
     render() {
         return <div className="column is-full">
             <div className="row header">
-                Do it!
+                <div className="header-side">
+                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button>&lt;</button> : null}
+                </div>
+                <div>Do it!</div>
+                <div className="header-side">
+                    <button onClick={this.clearDone}>Tick</button>
+                </div>
             </div>
             <TodoList todos={this.state.todos}
                 onDoneToggle={this.onDoneToggle}

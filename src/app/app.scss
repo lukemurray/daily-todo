@@ -48,8 +48,15 @@ div {
 .header {
     padding: .7rem 1rem;
     flex-shrink: 0;
-    justify-content: center;
-    background: #fff5f7;
+    justify-content: space-between;
+    background: #fffdda;
+
+    .header-side {
+        width: 3rem;
+        &:last-child {
+            justify-content: flex-end;
+        }
+    }
 }
 
 .todos {

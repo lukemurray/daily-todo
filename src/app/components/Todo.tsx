@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 export interface TodoItem {
-    done: boolean
+    done?: Date
     description: string
 }
 
