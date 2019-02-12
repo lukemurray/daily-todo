@@ -6,7 +6,7 @@
   "author": "Luke Murray",
   "license": "ISC",
   "scripts": {
-    "clean": "rm -r build",
+    "clean": "rm -rf build && rm -rf dist",
     "build": "tsc",
     "webpack-dev": "npx webpack-dev-server --port 8003 --mode development",
     "webpack": "npx webpack --mode production",
@@ -17,6 +17,7 @@
   },
   "build": {
     "appId": "org.daily-todo",
+    "productName": "Daily Todo",
     "asar": true,
     "files": [
       "package.json",
