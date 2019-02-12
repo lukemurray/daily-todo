@@ -1,18 +1,31 @@
 {
-  "name": "dailytodo",
+  "name": "daily-todo",
   "version": "0.1.0",
   "description": "Simple Daily Todo app",
-  "main": "build/src/main.js",
+  "main": "build/entry.js",
+  "author": "Luke Murray",
+  "license": "ISC",
   "scripts": {
+    "clean": "rm -r build",
     "build": "tsc",
     "webpack-dev": "npx webpack-dev-server --port 8003 --mode development",
     "webpack": "npx webpack --mode production",
     "app": "APP_URL=http://localhost:8003 npx electron .",
-    "start": "npm run build && npx concurrently 'npm run webpack-dev' 'npx wait-on http://localhost:8003 && npm run app'",
+    "start": "npm run clean && npm run build && npx concurrently 'npm run webpack-dev' 'npx wait-on http://localhost:8003 && npm run app'",
+    "pack": "npm run clean && npm run build && npm run webpack && npx electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Luke Murray",
-  "license": "ISC",
+  "build": {
+    "appId": "org.daily-todo",
+    "asar": true,
+    "files": [
+      "package.json",
+      "build/**/*",
+      "!src/**/*",
+      "!**/node_modules/**/*",
+      "!**/.*"
+    ]
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/react": "16.8.2",
@@ -21,8 +34,10 @@
     "@types/react-router-dom": "4.3.1",
     "awesome-typescript-loader": "5.2.1",
     "concurrently": "^4.1.0",
+    "copy-webpack-plugin": "^4.6.0",
     "css-loader": "2.1.0",
     "electron": "4.0.4",
+    "electron-builder": "^20.38.5",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "react": "16.8.1",
