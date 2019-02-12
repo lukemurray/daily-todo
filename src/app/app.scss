@@ -23,6 +23,12 @@ div {
     display: flex;
 }
 
+button {
+    border-radius: 2px;
+    border: solid 1px #b1b1b1;
+    background: #efefef;
+}
+
 .row {
     flex-direction: row;
 }
