@@ -11,23 +11,30 @@ interface Props {
 interface State {
     editing: boolean
     value: string
+    hasMouse: boolean
 }
 
 export default class InlineEdit extends React.Component<Props, State> {
     inputRef: React.RefObject<HTMLInputElement>;
+    element: React.RefObject<HTMLDivElement>;
     constructor(props: Props) {
         super(props)
 
         this.state = {
             editing: props.editing,
             value: '',
+            hasMouse: false,
         }
 
         this.onClick = this.onClick.bind(this)
         this.complete = this.complete.bind(this)
         this.keyDown = this.keyDown.bind(this)
+        this.onMouseOver = this.onMouseOver.bind(this)
+        this.onMouseDownDocument = this.onMouseDownDocument.bind(this)
+        this.onMouseLeave = this.onMouseLeave.bind(this)
 
         this.inputRef = React.createRef()
+        this.element = React.createRef()
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
@@ -38,10 +45,34 @@ export default class InlineEdit extends React.Component<Props, State> {
 
     componentDidMount() {
         document.addEventListener('keydown', this.keyDown)
+        document.addEventListener('mousedown', this.onMouseDownDocument)
+        if (this.element.current) {
+            this.element.current.addEventListener('mouseover', this.onMouseOver)
+            this.element.current.addEventListener('mouseleave', this.onMouseLeave)
+        }
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keyDown)
+        document.removeEventListener('mousedown', this.onMouseDownDocument)
+        if (this.element.current) {
+            this.element.current.removeEventListener('mouseover', this.onMouseOver)
+            this.element.current.removeEventListener('mouseleave', this.onMouseLeave)
+        }
+    }
+
+    private onMouseDownDocument() {
+        if (!this.state.hasMouse) {
+            this.cancel()
+        }
+    }
+
+    private onMouseLeave() {
+        this.setState({hasMouse: false})
+    }
+
+    private onMouseOver() {
+        this.setState({hasMouse: true})
     }
 
     private keyDown(e: KeyboardEvent) {
@@ -80,7 +111,7 @@ export default class InlineEdit extends React.Component<Props, State> {
 
     render() {
         const editing = this.isEditing();
-        return <div className={this.props.className} onClick={this.onClick}>
+        return <div ref={this.element} className={this.props.className} onClick={this.onClick}>
             <div className="row is-full" style={{display: editing ? 'flex' : 'none'}}>
                 <input ref={this.inputRef} className="row is-full" type="text" value={this.state.value} onChange={e => this.setState({value: e.target.value})} />
                 <button onClick={e => this.complete(false)}>+</button>
