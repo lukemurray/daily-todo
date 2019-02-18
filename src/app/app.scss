@@ -72,6 +72,11 @@ button {
 
     .todo-container {
         flex-shrink: 0;
+
+        &.dragging {
+            border-bottom: 1px solid $seperator-color;
+            background: $background-primary-hover;
+        }
     }
 
     .todo {

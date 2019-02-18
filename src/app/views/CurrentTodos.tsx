@@ -1,12 +1,6 @@
 import * as React from 'react'
 import TodoList from '../components/TodoList';
-import { TodoItem } from '../components/Todo';
-import * as fs from 'fs'
-
-interface TodoData {
-    currentTodos: TodoItem[]
-    previouslyDone?: {[key: string]: TodoItem[]}
-}
+import TodoManager, { TodoItem, ITodoData } from '../TodoManager';
 
 interface State {
     todos: TodoItem[]
@@ -14,9 +8,8 @@ interface State {
     previouslyDone?: {[key: string]: TodoItem[]}
 }
 
-const FilePath = './todos.json';
-
 export default class CurrentTodos extends React.Component<{}, State> {
+    todoManager: TodoManager;
     constructor(props: {}) {
         super(props)
 
@@ -30,22 +23,37 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.onCancelAddTodo = this.onCancelAddTodo.bind(this)
         this.onOrderUpdated = this.onOrderUpdated.bind(this)
         this.clearDone = this.clearDone.bind(this)
+        this.onKeyPress = this.onKeyPress.bind(this)
+        this.showPastTodos = this.showPastTodos.bind(this)
+
+        this.todoManager = new TodoManager()
     }
 
     componentDidMount() {
-        if (fs.existsSync(FilePath)) {
-            let file = fs.readFileSync(FilePath, 'utf8')
-            if (file) {
-                let data: TodoData = JSON.parse(file)
-                this.setState({todos: data.currentTodos, previouslyDone: data.previouslyDone})
-            }
-        }
+        let data = this.todoManager.getTodoData()
+        this.setState({todos: data.currentTodos, previouslyDone: data.previouslyDone})
+        document.addEventListener('keypress', this.onKeyPress)
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keypress', this.onKeyPress)
     }
 
     componentDidUpdate(prevProps: {}, prevState: State) {
         if (this.hasChanges(prevState.todos, this.state.todos)) {
             console.log('saving file...')
-            this.updateData()
+            let data: ITodoData = {
+                currentTodos: this.state.todos,
+                previouslyDone: this.state.previouslyDone
+            }
+            this.todoManager.saveTodoData(data)
+        }
+    }
+
+    private onKeyPress(event: KeyboardEvent) {
+        if (event.code == "Space" && !this.state.hasActiveInput) {
+            this.setState({hasActiveInput: true})
+            event.preventDefault()
         }
     }
 
@@ -57,8 +65,6 @@ export default class CurrentTodos extends React.Component<{}, State> {
             const prev = prevTodos[i];
             const todo = todos[i];
             for (const key in prev) {
-                if (prev.description == 'Email')
-                    console.log(key, (prev as any)[key], (todo as any)[key], (prev as any)[key] != (todo as any)[key])
                 if ((prev as any)[key] != (todo as any)[key]) {
                     return true
                 }
@@ -67,14 +73,6 @@ export default class CurrentTodos extends React.Component<{}, State> {
                 return true
         }
         return false
-    }
-
-    private updateData() {
-        let data: TodoData = {
-            currentTodos: this.state.todos,
-            previouslyDone: this.state.previouslyDone
-        }
-        fs.writeFileSync(FilePath, JSON.stringify(data))
     }
 
     private onDoneToggle(todo: TodoItem, done: boolean) {
@@ -115,20 +113,26 @@ export default class CurrentTodos extends React.Component<{}, State> {
     private clearDone() {
         let todos = this.state.todos.concat([])
         let doneTodos = todos.filter(t => t.done)
-        doneTodos.forEach(t => todos.splice(todos.indexOf(t), 1))
+        if (doneTodos.length > 0) {
+            doneTodos.forEach(t => todos.splice(todos.indexOf(t), 1))
 
-        let cleared = new Date()
-        let previouslyDone = Object.assign({}, this.state.previouslyDone)
-        previouslyDone[cleared.toJSON()] = doneTodos
+            let cleared = new Date()
+            let previouslyDone = Object.assign({}, this.state.previouslyDone)
+            previouslyDone[cleared.toJSON()] = doneTodos
 
-        this.setState({previouslyDone: previouslyDone, todos: todos})
+            this.setState({previouslyDone: previouslyDone, todos: todos})
+        }
+    }
+
+    private showPastTodos() {
+
     }
 
     render() {
         return <div className="column is-full">
             <div className="row header">
                 <div className="header-side">
-                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button>&lt;</button> : null}
+                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button onClick={this.showPastTodos}>&lt;</button> : null}
                 </div>
                 <div>Do it!</div>
                 <div className="header-side">

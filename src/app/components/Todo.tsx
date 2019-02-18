@@ -1,9 +1,5 @@
 import * as React from 'react'
-
-export interface TodoItem {
-    done?: Date
-    description: string
-}
+import { TodoItem } from '../TodoManager';
 
 interface Props {
     data: TodoItem

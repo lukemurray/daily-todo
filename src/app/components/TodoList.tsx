@@ -1,7 +1,8 @@
 import * as React from 'react'
-import Todo, { TodoItem } from './Todo';
+import Todo from './Todo';
 import InlineEdit from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { TodoItem } from '../TodoManager';
 
 interface Props {
     todos: TodoItem[]
@@ -37,7 +38,7 @@ export default class TodoList extends React.Component<Props> {
                                     <div ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className="column todo-container">
+                                    className={`column todo-container ${snapshot.isDragging ? 'dragging' : ''}`}>
                                         <div className="seperator"></div>
                                         <Todo data={todo} onDoneToggle={this.props.onDoneToggle} />
                                     </div>
