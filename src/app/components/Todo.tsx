@@ -48,18 +48,18 @@ export default class Todo extends React.Component<Props, State> {
     }
 
     render() {
-        let todoData = <>
-            {this.props.data.description}
-            <a className="is-action" onClick={this.editItem} style={{display: this.state.hover && !this.props.data.done ? 'block' : 'none' }}>edit</a>
-        </>
+        let todoData = <>{this.props.data.description}</>
 
         if (this.state.edit) {
             todoData = <InlineEdit editing={true} onCancel={() => this.setState({edit: false})} className="row is-full" value={this.props.data.description} onComplete={this.onEditComplete} />
         }
         return <div className={`row todo ${this.props.className} ${this.props.data.done ? 'done' : ''}`} onMouseOver={this.onHover} onMouseOut={this.onHoverStop} onClick={() => this.props.onDoneToggle(this.props.data, !this.props.data.done)}>
             <div className="handle">{this.state.hover ? '||' : ''}</div>
-            <div className="row is-full has-space-between todo-data">
+            <div className="row is-full todo-description">
                 {todoData}
+            </div>
+            <div className="todo-end">
+                <a className="is-action" onClick={this.editItem} style={{display: !this.state.edit && this.state.hover && !this.props.data.done ? 'block' : 'none' }}>edit</a>
             </div>
         </div>
     }
