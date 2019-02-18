@@ -56,7 +56,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
     }
 
     private onKeyPress(event: KeyboardEvent) {
-        if (event.code == "Space" && !this.state.hasActiveInput) {
+        if (event.code == 'Space' && !this.state.hasActiveInput && document.activeElement!.tagName != 'INPUT') {
             this.setState({hasActiveInput: true})
             event.preventDefault()
         }
