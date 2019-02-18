@@ -29,6 +29,17 @@ button {
     background: #efefef;
 }
 
+a, a:visited, a:active {
+    color: #1f64f8;
+    text-decoration: underline;
+    padding: .2rem .4rem;
+
+    &:hover {
+        background: #dce7ff;
+        border-radius: 2px;
+    }
+}
+
 .row {
     flex-direction: row;
 }
@@ -49,6 +60,10 @@ button {
 
 .is-scrollable {
     overflow-y: auto;
+}
+
+.has-space-between {
+    justify-content: space-between;
 }
 
 .header {
@@ -83,6 +98,7 @@ button {
         cursor: pointer;
         padding: .35rem 0;
         align-items: center;
+        height: 18px;
 
         &:hover {
             background: $background-primary-hover;
@@ -104,6 +120,16 @@ button {
 
             &:hover {
                 cursor: grab;
+            }
+        }
+
+        .todo-data {
+            padding-right: 1rem;
+            align-items: center;
+            flex-shrink: 0;
+
+            .is-action {
+                font-size: 75%;
             }
         }
     }

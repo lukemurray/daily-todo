@@ -25,6 +25,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.clearDone = this.clearDone.bind(this)
         this.onKeyPress = this.onKeyPress.bind(this)
         this.showPastTodos = this.showPastTodos.bind(this)
+        this.onTodoEdited = this.onTodoEdited.bind(this)
 
         this.todoManager = new TodoManager()
     }
@@ -124,6 +125,15 @@ export default class CurrentTodos extends React.Component<{}, State> {
         }
     }
 
+    private onTodoEdited(prevTodo: TodoItem, updatedTodo: TodoItem) {
+        const matchTodoIdx = this.state.todos.findIndex(t => t.description == prevTodo.description)
+        if (matchTodoIdx > -1) {
+            let todos = this.state.todos.concat([])
+            todos.splice(matchTodoIdx, 1, updatedTodo)
+            this.setState({todos: todos})
+        }
+    }
+
     private showPastTodos() {
 
     }
@@ -140,6 +150,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
                 </div>
             </div>
             <TodoList todos={this.state.todos}
+                onTodoEdited={this.onTodoEdited}
                 onDoneToggle={this.onDoneToggle}
                 onNewTodo={this.onNewTodo}
                 onCancelAddTodo={this.onCancelAddTodo}

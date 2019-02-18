@@ -10,6 +10,7 @@ interface Props {
     onNewTodo: (todo: TodoItem, wasEnter: boolean) => void
     onCancelAddTodo: () => void
     onOrderUpdated: (fromIndex: number, toIndex: number) => void
+    onTodoEdited: (prevTodo: TodoItem, updatedTodo: TodoItem) => void
     hasActiveInput: boolean
 }
 
@@ -40,7 +41,7 @@ export default class TodoList extends React.Component<Props> {
                                     {...provided.dragHandleProps}
                                     className={`column todo-container ${snapshot.isDragging ? 'dragging' : ''}`}>
                                         <div className="seperator"></div>
-                                        <Todo data={todo} onDoneToggle={this.props.onDoneToggle} />
+                                        <Todo data={todo} onEdited={this.props.onTodoEdited} onDoneToggle={this.props.onDoneToggle} />
                                     </div>
                                 }</Draggable>
                             })}

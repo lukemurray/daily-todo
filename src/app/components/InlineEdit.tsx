@@ -2,10 +2,11 @@ import * as React from 'react'
 
 interface Props {
     className: string
-    children: string
+    children?: string
     editing: boolean
     onComplete: (data: {value: string, wasEnter: boolean}) => void
     onCancel: () => void
+    value?: string
 }
 
 interface State {
@@ -22,7 +23,7 @@ export default class InlineEdit extends React.Component<Props, State> {
 
         this.state = {
             editing: props.editing,
-            value: '',
+            value: this.props.value ? this.props.value : '',
             hasMouse: false,
         }
 
@@ -87,7 +88,8 @@ export default class InlineEdit extends React.Component<Props, State> {
         }
     }
 
-    private onClick() {
+    private onClick(e: React.MouseEvent<HTMLDivElement>) {
+        e.stopPropagation()
         if (this.state.editing)
             return
         this.setState({
