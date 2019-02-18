@@ -1,11 +1,13 @@
 import * as React from 'react'
 import TodoList from '../components/TodoList';
 import TodoManager, { TodoItem, ITodoData } from '../TodoManager';
+import Modal from '../components/Modal';
 
 interface State {
     todos: TodoItem[]
     hasActiveInput: boolean
     previouslyDone?: {[key: string]: TodoItem[]}
+    showDelete?: TodoItem | null
 }
 
 export default class CurrentTodos extends React.Component<{}, State> {
@@ -15,7 +17,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
 
         this.state = {
             todos: [],
-            hasActiveInput: false
+            hasActiveInput: false,
         }
 
         this.onDoneToggle = this.onDoneToggle.bind(this)
@@ -26,6 +28,8 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.onKeyPress = this.onKeyPress.bind(this)
         this.showPastTodos = this.showPastTodos.bind(this)
         this.onTodoEdited = this.onTodoEdited.bind(this)
+        this.onTodoDelete = this.onTodoDelete.bind(this)
+        this.onTodoDeleteConfirmed = this.onTodoDeleteConfirmed.bind(this)
 
         this.todoManager = new TodoManager()
     }
@@ -134,6 +138,19 @@ export default class CurrentTodos extends React.Component<{}, State> {
         }
     }
 
+    private onTodoDelete(todo: TodoItem) {
+        this.setState({showDelete: todo})
+    }
+
+    private onTodoDeleteConfirmed() {
+        const matchTodoIdx = this.state.todos.findIndex(t => t.description == this.state.showDelete!.description)
+        if (matchTodoIdx > -1) {
+            let todos = this.state.todos.concat([])
+            todos.splice(matchTodoIdx, 1)
+            this.setState({todos: todos, showDelete: null})
+        }
+    }
+
     private showPastTodos() {
 
     }
@@ -142,7 +159,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         return <div className="column is-full">
             <div className="row header">
                 <div className="header-side">
-                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button onClick={this.showPastTodos}>&lt;</button> : null}
+                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button onClick={this.showPastTodos}><i className="fas fa-chevron-left"></i></button> : null}
                 </div>
                 <div>Do it!</div>
                 <div className="header-side">
@@ -151,11 +168,15 @@ export default class CurrentTodos extends React.Component<{}, State> {
             </div>
             <TodoList todos={this.state.todos}
                 onTodoEdited={this.onTodoEdited}
+                onTodoDelete={this.onTodoDelete}
                 onDoneToggle={this.onDoneToggle}
                 onNewTodo={this.onNewTodo}
                 onCancelAddTodo={this.onCancelAddTodo}
                 hasActiveInput={this.state.hasActiveInput}
                 onOrderUpdated={this.onOrderUpdated} />
+            {this.state.showDelete ? <Modal onCancel={() => this.setState({showDelete: null})} onOk={this.onTodoDeleteConfirmed}>
+                Delete '{this.state.showDelete.description}'?
+            </Modal> : null}
         </div>
     }
 }

@@ -116,8 +116,8 @@ export default class InlineEdit extends React.Component<Props, State> {
         return <div ref={this.element} className={this.props.className} onClick={this.onClick}>
             <div className="row is-full" style={{display: editing ? 'flex' : 'none'}}>
                 <input ref={this.inputRef} className="row is-full" type="text" value={this.state.value} onChange={e => this.setState({value: e.target.value})} />
-                <button onClick={e => this.complete(false)}>+</button>
-                <button onClick={e => this.cancel()}>x</button>
+                <button onClick={e => this.complete(false)}><i className="fas fa-plus"></i></button>
+                <button onClick={e => this.cancel()}><i className="fas fa-times"></i></button>
             </div>
             <span style={{display: !editing ? 'block' : 'none'}}>{this.props.children}</span>
         </div>

@@ -3,8 +3,9 @@ import * as ReactDOM from 'react-dom'
 import {MemoryRouter as Router, Switch, Route} from 'react-router-dom'
 import CurrentTodos from './views/CurrentTodos'
 
+import '@fortawesome/fontawesome-free/scss/fontawesome.scss'
+import '@fortawesome/fontawesome-free/scss/solid.scss'
 import './app.scss'
-
 
 export default class App extends React.Component {
     render() {

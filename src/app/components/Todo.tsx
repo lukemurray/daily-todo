@@ -7,6 +7,7 @@ interface Props {
     className?: string
     onDoneToggle: (todo: TodoItem, done: boolean) => void
     onEdited: (prevTodo: TodoItem, updatedTodo: TodoItem) => void
+    onDelete: (todo: TodoItem) => void
 }
 
 interface State {
@@ -27,6 +28,7 @@ export default class Todo extends React.Component<Props, State> {
         this.onHoverStop = this.onHoverStop.bind(this)
         this.editItem = this.editItem.bind(this)
         this.onEditComplete = this.onEditComplete.bind(this)
+        this.deleteItem = this.deleteItem.bind(this)
     }
 
     private onHover() {
@@ -47,6 +49,11 @@ export default class Todo extends React.Component<Props, State> {
         this.props.onEdited(this.props.data, Object.assign({}, this.props.data, {description: data.value}))
     }
 
+    private deleteItem(e: React.MouseEvent<HTMLAnchorElement>) {
+        e.stopPropagation()
+        this.props.onDelete(this.props.data)
+    }
+
     render() {
         let todoData = <>{this.props.data.description}</>
 
@@ -59,7 +66,8 @@ export default class Todo extends React.Component<Props, State> {
                 {todoData}
             </div>
             <div className="todo-end">
-                <a className="is-action" onClick={this.editItem} style={{display: !this.state.edit && this.state.hover && !this.props.data.done ? 'block' : 'none' }}>edit</a>
+                <a className="is-action" onClick={this.editItem} style={{display: !this.state.edit && this.state.hover && !this.props.data.done ? 'block' : 'none' }}><i className="fas fa-pen"></i></a>
+                <a className="is-action" onClick={this.deleteItem} style={{display: !this.state.edit && this.state.hover && !this.props.data.done ? 'block' : 'none' }}><i className="fas fa-trash-alt"></i></a>
             </div>
         </div>
     }
