@@ -11,8 +11,11 @@ interface Props {
     onCancelAddTodo: () => void
     onOrderUpdated: (fromIndex: number, toIndex: number) => void
     onTodoEdited: (prevTodo: TodoItem, updatedTodo: TodoItem) => void
+    onTodoEditClicked: (index: number) => void
+    onTodoEditCancel: () => void
     onTodoDelete: (todo: TodoItem) => void
     hasActiveInput: boolean
+    editingTodoAt?: number
 }
 
 export default class TodoList extends React.Component<Props> {
@@ -43,6 +46,9 @@ export default class TodoList extends React.Component<Props> {
                                     className={`column todo-container ${snapshot.isDragging ? 'dragging' : ''}`}>
                                         <div className="seperator"></div>
                                         <Todo data={todo}
+                                            onEditClicked={() => this.props.onTodoEditClicked(index)}
+                                            onEditCancel={this.props.onTodoEditCancel}
+                                            edit={this.props.editingTodoAt == index}
                                             onEdited={this.props.onTodoEdited}
                                             onDelete={this.props.onTodoDelete}
                                             onDoneToggle={this.props.onDoneToggle} />

@@ -8,6 +8,7 @@ interface State {
     hasActiveInput: boolean
     previouslyDone?: {[key: string]: TodoItem[]}
     showDelete?: TodoItem | null
+    editingIndex?: number
 }
 
 export default class CurrentTodos extends React.Component<{}, State> {
@@ -30,6 +31,8 @@ export default class CurrentTodos extends React.Component<{}, State> {
         this.onTodoEdited = this.onTodoEdited.bind(this)
         this.onTodoDelete = this.onTodoDelete.bind(this)
         this.onTodoDeleteConfirmed = this.onTodoDeleteConfirmed.bind(this)
+        this.onTodoEditCancel = this.onTodoEditCancel.bind(this)
+        this.onTodoEditClick = this.onTodoEditClick.bind(this)
 
         this.todoManager = new TodoManager()
     }
@@ -56,7 +59,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
     }
 
     private onKeyPress(event: KeyboardEvent) {
-        if (event.code == 'Space' && !this.state.hasActiveInput && document.activeElement!.tagName != 'INPUT') {
+        if (event.code == 'Space' && !this.state.hasActiveInput && !this.state.editingIndex) {
             this.setState({hasActiveInput: true})
             event.preventDefault()
         }
@@ -134,7 +137,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
         if (matchTodoIdx > -1) {
             let todos = this.state.todos.concat([])
             todos.splice(matchTodoIdx, 1, updatedTodo)
-            this.setState({todos: todos})
+            this.setState({todos: todos, editingIndex: undefined})
         }
     }
 
@@ -149,6 +152,14 @@ export default class CurrentTodos extends React.Component<{}, State> {
             todos.splice(matchTodoIdx, 1)
             this.setState({todos: todos, showDelete: null})
         }
+    }
+
+    private onTodoEditCancel() {
+        this.setState({editingIndex: undefined})
+    }
+
+    private onTodoEditClick(index: number) {
+        this.setState({editingIndex: index})
     }
 
     private showPastTodos() {
@@ -167,6 +178,9 @@ export default class CurrentTodos extends React.Component<{}, State> {
                 </div>
             </div>
             <TodoList todos={this.state.todos}
+                onTodoEditCancel={this.onTodoEditCancel}
+                onTodoEditClicked={this.onTodoEditClick}
+                editingTodoAt={this.state.editingIndex}
                 onTodoEdited={this.onTodoEdited}
                 onTodoDelete={this.onTodoDelete}
                 onDoneToggle={this.onDoneToggle}
