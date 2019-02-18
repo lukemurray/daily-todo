@@ -24,10 +24,19 @@ div {
     display: flex;
 }
 
+.is-action {
+    cursor: pointer;
+}
+
 button {
+    @extend .is-action;
     border-radius: 2px;
     border: solid 1px #b1b1b1;
     background: #efefef;
+
+    &:hover {
+        background: $action-hover-background;
+    }
 }
 
 a, a:visited, a:active {
@@ -36,7 +45,7 @@ a, a:visited, a:active {
     padding: .2rem .4rem;
 
     &:hover {
-        background: #dce7ff;
+        background: $action-hover-background;
         border-radius: 2px;
     }
 }
