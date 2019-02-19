@@ -1,6 +1,9 @@
 import {app, Tray} from 'electron'
 import MainWindow from './MainWindow';
 
+let window: MainWindow | null = null
+let tray: Tray | null = null
+
 function createWindow(tray: Tray) {
     let win: MainWindow | null = new MainWindow()
 
@@ -11,10 +14,10 @@ function createWindow(tray: Tray) {
 }
 
 app.on('ready', () => {
-    const tray = new Tray(process.env.APP_URL ? `${__dirname}/../src/icons/tray.png` : `${__dirname}/icons/tray.png`)
-    const win = createWindow(tray)
+    tray = new Tray(process.env.APP_URL ? `${__dirname}/../src/icons/tray.png` : `${__dirname}/icons/tray.png`)
+    window = createWindow(tray)
     tray.on('click', (e) => {
-        win.show()
+        window!.show()
     })
     tray.setToolTip('Show your todo list.')
 })
