@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TodoList from '../components/TodoList';
-import TodoManager, { TodoItem, ITodoData } from '../TodoManager';
+import TodoManager, { TodoItem, ITodoListData } from '../TodoManager';
 import Modal from '../components/Modal';
 
 interface State {
@@ -9,6 +9,7 @@ interface State {
     previouslyDone?: {[key: string]: TodoItem[]}
     showDelete?: TodoItem | null
     editingIndex?: number
+    activeList?: string
 }
 
 export default class CurrentTodos extends React.Component<{}, State> {
@@ -38,8 +39,9 @@ export default class CurrentTodos extends React.Component<{}, State> {
     }
 
     componentDidMount() {
-        let data = this.todoManager.getTodoData()
-        this.setState({todos: data.currentTodos, previouslyDone: data.previouslyDone})
+        let todoLists = this.todoManager.getListNames()
+        this.setState({activeList: todoLists.length > 0 ? todoLists[0] : 'Todo'})
+
         document.addEventListener('keypress', this.onKeyPress)
     }
 
@@ -50,11 +52,15 @@ export default class CurrentTodos extends React.Component<{}, State> {
     componentDidUpdate(prevProps: {}, prevState: State) {
         if (this.hasChanges(prevState.todos, this.state.todos)) {
             console.log('saving file...')
-            let data: ITodoData = {
+            let data: ITodoListData = {
                 currentTodos: this.state.todos,
                 previouslyDone: this.state.previouslyDone
             }
-            this.todoManager.saveTodoData(data)
+            this.todoManager.saveTodoData(this.state.activeList!, data)
+        }
+        else if (prevState.activeList != this.state.activeList) {
+            let data = this.todoManager.getTodoData(this.state.activeList!)
+            this.setState({todos: data.currentTodos, previouslyDone: data.previouslyDone})
         }
     }
 
@@ -172,7 +178,10 @@ export default class CurrentTodos extends React.Component<{}, State> {
                 <div className="header-side">
                     {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button> : null}
                 </div>
-                <div>Do it!</div>
+                <div className="column is-centered">
+                    <div>Do it!</div>
+                    <div className="todo-list-name">{this.state.activeList}</div>
+                </div>
                 <div className="header-side">
                     <button title="Clear on completed tasks" onClick={this.clearDone}><i className="fas fa-check"></i></button>
                 </div>

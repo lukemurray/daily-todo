@@ -62,6 +62,10 @@ a, a:visited, a:active {
 
 .column {
     flex-direction: column;
+
+    &.is-centered {
+        align-items: center;
+    }
 }
 
 .column, .row {
@@ -84,7 +88,7 @@ a, a:visited, a:active {
 }
 
 .header {
-    padding: .7rem 1rem;
+    padding: .5rem 1rem;
     flex-shrink: 0;
     justify-content: space-between;
     background: #fffdda;
@@ -99,6 +103,12 @@ a, a:visited, a:active {
 
     button {
         padding: 0.3rem .5rem;
+    }
+
+    .todo-list-name {
+        font-size: 80%;
+        color: #969696;
+        border-bottom: dashed 1px #969696;
     }
 }
 

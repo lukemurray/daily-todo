@@ -7,12 +7,12 @@ export interface TodoItem {
     description: string
 }
 
-export interface ITodoData {
+export interface ITodoListData {
     currentTodos: TodoItem[]
     previouslyDone?: {[key: string]: TodoItem[]}
 }
 
-class TodoData implements ITodoData {
+class TodoListData implements ITodoListData {
     currentTodos: TodoItem[];
     previouslyDone?: { [key: string]: TodoItem[] };
 
@@ -23,17 +23,38 @@ class TodoData implements ITodoData {
 }
 
 export default class TodoManager {
-    saveTodoData(data: ITodoData): void {
-        fs.writeFileSync(FilePath, JSON.stringify(data))
-    }
-    getTodoData(): ITodoData {
+    public saveTodoData(listName:string, data: ITodoListData): void {
+        var allData = null
         if (fs.existsSync(FilePath)) {
             let file = fs.readFileSync(FilePath, 'utf8')
             if (file) {
-                let data: ITodoData = JSON.parse(file)
+                allData = JSON.parse(file)
+            }
+        }
+        allData = Object.assign({}, allData, {listName: data})
+
+        fs.writeFileSync(FilePath, JSON.stringify(allData))
+    }
+
+    public getTodoData(listName:string): ITodoListData {
+        if (fs.existsSync(FilePath)) {
+            let file = fs.readFileSync(FilePath, 'utf8')
+            if (file) {
+                let data: ITodoListData = JSON.parse(file)[listName]
                 return data
             }
         }
-        return new TodoData()
+        return new TodoListData()
+    }
+
+    public getListNames(): string[] {
+        if (fs.existsSync(FilePath)) {
+            let file = fs.readFileSync(FilePath, 'utf8')
+            if (file) {
+                let data = Object.keys(JSON.parse(file))
+                return data
+            }
+        }
+        return []
     }
 }
