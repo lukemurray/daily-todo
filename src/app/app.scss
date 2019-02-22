@@ -54,6 +54,16 @@ button {
             cursor: default;
         }
     }
+
+    &.link {
+        border: none;
+        background: inherit;
+        &:disabled {
+            &:hover {
+                background: inherit;
+            }
+        }
+    }
 }
 
 a, a:visited, a:active {
@@ -114,6 +124,7 @@ a, a:visited, a:active {
     }
 
     button {
+        -webkit-app-region: none;
         padding: 0.3rem .5rem;
     }
 
@@ -143,6 +154,10 @@ a, a:visited, a:active {
         padding: .35rem 0;
         align-items: center;
         height: 18px;
+
+        &.readonly {
+            cursor: text;
+        }
 
         &:hover {
             background: $background-primary-hover;

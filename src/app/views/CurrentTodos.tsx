@@ -12,9 +12,13 @@ interface State {
     activeList?: string
 }
 
-export default class CurrentTodos extends React.Component<{}, State> {
+interface Props {
+    history: { push: (route: string) => void}
+}
+
+export default class CurrentTodos extends React.Component<Props, State> {
     todoManager: TodoManager;
-    constructor(props: {}) {
+    constructor(props: Props) {
         super(props)
 
         this.state = {
@@ -169,7 +173,9 @@ export default class CurrentTodos extends React.Component<{}, State> {
     }
 
     private showPastTodos() {
-
+        let keys = Object.keys(this.state.previouslyDone as any)
+        let route = keys[keys.length - 1]
+        this.props.history.push(`/${this.state.activeList}/${route}`)
     }
 
     render() {
@@ -182,7 +188,7 @@ export default class CurrentTodos extends React.Component<{}, State> {
                     <div className="todo-list-name">{this.state.activeList}</div>
                 </div>
                 <div className="header-side">
-                    <button disabled={this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0} title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button>
+                    <button disabled={!(this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0)} title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button>
                     <button title="Clear on completed tasks" onClick={this.clearDone}><i className="fas fa-check"></i></button>
                 </div>
             </div>
