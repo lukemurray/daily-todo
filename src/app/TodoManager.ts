@@ -31,7 +31,8 @@ export default class TodoManager {
                 allData = JSON.parse(file)
             }
         }
-        allData = Object.assign({}, allData, {listName: data})
+        allData = Object.assign({}, allData)
+        allData[listName] = data
 
         fs.writeFileSync(FilePath, JSON.stringify(allData))
     }
