@@ -176,13 +176,13 @@ export default class CurrentTodos extends React.Component<{}, State> {
         return <div className="column is-full">
             <div className="row header">
                 <div className="header-side">
-                    {this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0 ? <button title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button> : null}
                 </div>
                 <div className="column is-centered">
-                    <div>Do it!</div>
+                <div>Do it!</div>
                     <div className="todo-list-name">{this.state.activeList}</div>
                 </div>
                 <div className="header-side">
+                    <button disabled={this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0} title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button>
                     <button title="Clear on completed tasks" onClick={this.clearDone}><i className="fas fa-check"></i></button>
                 </div>
             </div>

@@ -43,6 +43,17 @@ button {
         // outline: 1px solid $active-color;
         // outline: none;
     }
+
+    &:disabled {
+        .far, .fas {
+            color: #969696;
+        }
+
+        &:hover {
+            background: #efefef;
+            cursor: default;
+        }
+    }
 }
 
 a, a:visited, a:active {
@@ -88,6 +99,7 @@ a, a:visited, a:active {
 }
 
 .header {
+    -webkit-app-region: drag;
     padding: .5rem 1rem;
     flex-shrink: 0;
     justify-content: space-between;
