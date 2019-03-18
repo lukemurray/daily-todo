@@ -14,6 +14,7 @@ interface Props {
     onTodoEditClicked: (index: number) => void
     onTodoEditCancel: () => void
     onTodoDelete: (todo: TodoItem) => void
+    onTodoAddStart: () => void
     hasActiveInput: boolean
     editingTodoAt?: number
 }
@@ -58,7 +59,11 @@ export default class TodoList extends React.Component<Props> {
                     </div>}
                 </Droppable>
             </DragDropContext>
-            <InlineEdit editing={this.props.hasActiveInput} onCancel={this.props.onCancelAddTodo} className="todo todo-input" onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.wasEnter)}>Click to add item...</InlineEdit>
+            <InlineEdit editing={this.props.hasActiveInput} 
+                onCancel={this.props.onCancelAddTodo} 
+                onEditStart={this.props.onTodoAddStart}
+                className="todo todo-input" 
+                onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.wasEnter)}>Click to add item...</InlineEdit>
         </div>
     }
 }

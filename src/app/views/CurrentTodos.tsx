@@ -202,6 +202,7 @@ export default class CurrentTodos extends React.Component<Props, State> {
                 onNewTodo={this.onNewTodo}
                 onCancelAddTodo={this.onCancelAddTodo}
                 hasActiveInput={this.state.hasActiveInput}
+                onTodoAddStart={() => this.setState({hasActiveInput: true})}
                 onOrderUpdated={this.onOrderUpdated} />
             {this.state.showDelete ? <Modal onCancel={() => this.setState({showDelete: null})} onOk={this.onTodoDeleteConfirmed}>
                 Delete '{this.state.showDelete.description}'?

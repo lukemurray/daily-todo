@@ -7,6 +7,7 @@ interface Props {
     onComplete: (data: {value: string, wasEnter: boolean}) => void
     onCancel: () => void
     value?: string
+    onEditStart?: () => void
 }
 
 interface State {
@@ -95,6 +96,9 @@ export default class InlineEdit extends React.Component<Props, State> {
         this.setState({
             editing: !this.state.editing
         })
+        if (this.props.onEditStart) {
+            this.props.onEditStart()
+        }
     }
 
     private complete(wasEnter: boolean) {
