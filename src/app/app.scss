@@ -38,12 +38,6 @@ button {
         background: $action-hover-background;
     }
 
-    &:focus {
-        // border-color: $action-hover-background;
-        // outline: 1px solid $active-color;
-        // outline: none;
-    }
-
     &:disabled {
         .far, .fas {
             color: #969696;

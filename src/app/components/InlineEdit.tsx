@@ -1,10 +1,15 @@
 import * as React from 'react'
 
+export enum Key {
+    Enter,
+    CommandControl
+}
+
 interface Props {
     className: string
     children?: string
     editing: boolean
-    onComplete: (data: {value: string, wasEnter: boolean}) => void
+    onComplete: (data: {value: string, keys: Key[]}) => void
     onCancel: () => void
     value?: string
     onEditStart?: () => void
@@ -14,6 +19,7 @@ interface State {
     editing: boolean
     value: string
     hasMouse: boolean
+    hasMeta: boolean
 }
 
 export default class InlineEdit extends React.Component<Props, State> {
@@ -26,11 +32,13 @@ export default class InlineEdit extends React.Component<Props, State> {
             editing: props.editing,
             value: this.props.value ? this.props.value : '',
             hasMouse: false,
+            hasMeta: false,
         }
 
         this.onClick = this.onClick.bind(this)
         this.complete = this.complete.bind(this)
         this.keyDown = this.keyDown.bind(this)
+        this.keyUp = this.keyUp.bind(this)
         this.onMouseOver = this.onMouseOver.bind(this)
         this.onMouseDownDocument = this.onMouseDownDocument.bind(this)
         this.onMouseLeave = this.onMouseLeave.bind(this)
@@ -47,6 +55,7 @@ export default class InlineEdit extends React.Component<Props, State> {
 
     componentDidMount() {
         document.addEventListener('keydown', this.keyDown)
+        document.addEventListener('keyup', this.keyUp)
         document.addEventListener('mousedown', this.onMouseDownDocument)
         if (this.element.current) {
             this.element.current.addEventListener('mouseover', this.onMouseOver)
@@ -56,6 +65,7 @@ export default class InlineEdit extends React.Component<Props, State> {
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keyDown)
+        document.removeEventListener('keyup', this.keyUp)
         document.removeEventListener('mousedown', this.onMouseDownDocument)
         if (this.element.current) {
             this.element.current.removeEventListener('mouseover', this.onMouseOver)
@@ -80,12 +90,25 @@ export default class InlineEdit extends React.Component<Props, State> {
     private keyDown(e: KeyboardEvent) {
         if (!this.isEditing())
             return
-
+        if (e.key == "Meta") {
+            this.setState({hasMeta: true})
+        }
         if (e.keyCode == 13) {
-            this.complete(true)
+            let keys = [Key.Enter]
+            if (this.state.hasMeta) {
+                keys.push(Key.CommandControl)
+            }
+            this.complete(keys)
         }
         else if (e.keyCode == 27) {
             this.cancel()
+        }
+    }
+    private keyUp(e: KeyboardEvent) {
+        if (!this.isEditing())
+            return
+        if (e.key == "Meta") {
+            this.setState({hasMeta: false})
         }
     }
 
@@ -101,8 +124,8 @@ export default class InlineEdit extends React.Component<Props, State> {
         }
     }
 
-    private complete(wasEnter: boolean) {
-        this.props.onComplete({value: this.state.value, wasEnter: wasEnter})
+    private complete(keys: Key[]) {
+        this.props.onComplete({value: this.state.value, keys: keys})
         this.setState({editing: false, value: ''})
     }
 
@@ -120,7 +143,7 @@ export default class InlineEdit extends React.Component<Props, State> {
         return <div ref={this.element} className={this.props.className} onClick={this.onClick}>
             <div className="row is-full" style={{display: editing ? 'flex' : 'none'}}>
                 <input ref={this.inputRef} className="row is-full" type="text" value={this.state.value} onChange={e => this.setState({value: e.target.value})} />
-                <button onClick={e => this.complete(false)}><i className="fas fa-plus"></i></button>
+                <button onClick={e => this.complete([])}><i className="fas fa-plus"></i></button>
                 <button onClick={e => this.cancel()}><i className="fas fa-times"></i></button>
             </div>
             <span style={{display: !editing ? 'block' : 'none'}}>{this.props.children}</span>

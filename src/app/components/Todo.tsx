@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { TodoItem } from '../TodoManager';
-import InlineEdit from './InlineEdit';
+import InlineEdit, { Key } from './InlineEdit';
 
 interface Props {
     data: TodoItem
@@ -51,7 +51,7 @@ export default class Todo extends React.PureComponent<Props, State> {
         }
     }
 
-    private onEditComplete(data: {value: string, wasEnter: boolean}) {
+    private onEditComplete(data: {value: string, keys: Key[]}) {
         if (this.props.onEdited && !this.props.readonly) {
             this.props.onEdited(this.props.data, Object.assign({}, this.props.data, {description: data.value}))
         }

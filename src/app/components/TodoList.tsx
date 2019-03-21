@@ -1,13 +1,13 @@
 import * as React from 'react'
 import Todo from './Todo';
-import InlineEdit from './InlineEdit';
+import InlineEdit, { Key } from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { TodoItem } from '../TodoManager';
 
 interface Props {
     todos: TodoItem[]
     onDoneToggle: (todo: TodoItem, done: boolean) => void
-    onNewTodo: (todo: TodoItem, wasEnter: boolean) => void
+    onNewTodo: (todo: TodoItem, keys: Key[]) => void
     onCancelAddTodo: () => void
     onOrderUpdated: (fromIndex: number, toIndex: number) => void
     onTodoEdited: (prevTodo: TodoItem, updatedTodo: TodoItem) => void
@@ -63,7 +63,7 @@ export default class TodoList extends React.Component<Props> {
                 onCancel={this.props.onCancelAddTodo} 
                 onEditStart={this.props.onTodoAddStart}
                 className="todo todo-input" 
-                onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.wasEnter)}>Click to add item...</InlineEdit>
+                onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.keys)}>Click to add item...</InlineEdit>
         </div>
     }
 }

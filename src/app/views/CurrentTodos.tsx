@@ -2,6 +2,7 @@ import * as React from 'react'
 import TodoList from '../components/TodoList';
 import TodoManager, { TodoItem, ITodoListData } from '../TodoManager';
 import Modal from '../components/Modal';
+import { Key } from '../components/InlineEdit';
 
 interface State {
     todos: TodoItem[]
@@ -108,11 +109,18 @@ export default class CurrentTodos extends React.Component<Props, State> {
         }
     }
 
-    private onNewTodo(todo: TodoItem, wasEnter: boolean) {
+    private onNewTodo(todo: TodoItem, keys: Key[]) {
         if (todo.description.trim().length > 0) {
+            let todos = this.state.todos
+            if (keys.includes(Key.CommandControl)) {
+                todos.splice(0, 0, todo)
+            }
+            else {
+                todos = todos.concat(todo)
+            }
             this.setState({
-                todos: this.state.todos.concat(todo),
-                hasActiveInput: wasEnter
+                todos: todos,
+                hasActiveInput: keys.includes(Key.Enter)
             })
         }
     }
