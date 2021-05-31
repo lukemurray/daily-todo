@@ -14,10 +14,11 @@ body {
     padding: 0;
     margin: 0;
     height: 100%;
+    font-size: 16px;
 }
 
 .app-header {
-    font-weight: 400;
+    font-weight: 600;
 }
 
 #appContent {
@@ -143,7 +144,7 @@ a, a:visited, a:active {
         flex-shrink: 0;
 
         &.dragging {
-            border-bottom: 1px solid $seperator-color;
+            border-bottom: 1px solid $separator-color;
             background: $background-primary-hover;
         }
     }
@@ -209,12 +210,20 @@ a, a:visited, a:active {
         }
     }
 
-    .seperator {
+    .separator {
         height: 1px;
-        background: $seperator-color;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        background: $separator-color;
 
         &:hover {
             cursor: text;
+        }
+
+        &.can-insert {
+            &:hover {
+                background-color: #8de995;
+            }
         }
     }
 
@@ -224,8 +233,8 @@ a, a:visited, a:active {
         color: #c8c8c8;
         font-style: italic;
         cursor: text;
-        border-top: 1px solid $seperator-color;
-        border-bottom: 1px solid $seperator-color;
+        border-top: 1px solid $separator-color;
+        border-bottom: 1px solid $separator-color;
         flex-shrink: 0;
 
         button {

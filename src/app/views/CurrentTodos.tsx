@@ -56,7 +56,6 @@ export default class CurrentTodos extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps: {}, prevState: State) {
         if (this.hasChanges(prevState.todos, this.state.todos)) {
-            console.log('saving file...')
             let data: ITodoListData = {
                 currentTodos: this.state.todos,
                 previouslyDone: this.state.previouslyDone
@@ -109,18 +108,21 @@ export default class CurrentTodos extends React.Component<Props, State> {
         }
     }
 
-    private onNewTodo(todo: TodoItem, keys: Key[]) {
+    private onNewTodo(todo: TodoItem, keys: Key[], index: number | null = null) {
         if (todo.description.trim().length > 0) {
             let todos = this.state.todos
             if (keys.includes(Key.CommandControl)) {
                 todos.splice(0, 0, todo)
+            }
+            else if (index !== null) {
+                todos.splice(index, 0, todo)
             }
             else {
                 todos = todos.concat(todo)
             }
             this.setState({
                 todos: todos,
-                hasActiveInput: keys.includes(Key.Enter)
+                hasActiveInput: index == null && keys.includes(Key.Enter)
             })
         }
     }

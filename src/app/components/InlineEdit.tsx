@@ -125,8 +125,9 @@ export default class InlineEdit extends React.Component<Props, State> {
     }
 
     private complete(keys: Key[]) {
-        this.props.onComplete({value: this.state.value, keys: keys})
+        const val = this.state.value
         this.setState({editing: false, value: ''})
+        this.props.onComplete({value: val, keys: keys})
     }
 
     private cancel() {

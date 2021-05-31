@@ -3,11 +3,12 @@ import Todo from './Todo';
 import InlineEdit, { Key } from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { TodoItem } from '../TodoManager';
+import { TodoSeparator } from './TodoSeparator';
 
 interface Props {
     todos: TodoItem[]
     onDoneToggle: (todo: TodoItem, done: boolean) => void
-    onNewTodo: (todo: TodoItem, keys: Key[]) => void
+    onNewTodo: (todo: TodoItem, keys: Key[], index?: number) => void
     onCancelAddTodo: () => void
     onOrderUpdated: (fromIndex: number, toIndex: number) => void
     onTodoEdited: (prevTodo: TodoItem, updatedTodo: TodoItem) => void
@@ -36,7 +37,7 @@ export default class TodoList extends React.Component<Props> {
         return <div className="column is-full todos">
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
-                    {(provided, snapshot) =>
+                    {(provided) =>
                         <div className="column is-scrollable" ref={provided.innerRef}>
                             {this.props.todos.map((todo, index) => {
                                 return <Draggable key={todo.description} draggableId={todo.description} index={index}>
@@ -45,7 +46,7 @@ export default class TodoList extends React.Component<Props> {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     className={`column todo-container ${snapshot.isDragging ? 'dragging' : ''}`}>
-                                        <div className="seperator"></div>
+                                        <TodoSeparator onNewTodo={(todo, keys) => this.props.onNewTodo(todo, keys, index)} />
                                         <Todo data={todo}
                                             onEditClicked={() => this.props.onTodoEditClicked(index)}
                                             onEditCancel={this.props.onTodoEditCancel}
@@ -56,13 +57,14 @@ export default class TodoList extends React.Component<Props> {
                                     </div>
                                 }</Draggable>
                             })}
+                            {provided.placeholder}
                     </div>}
                 </Droppable>
             </DragDropContext>
-            <InlineEdit editing={this.props.hasActiveInput} 
-                onCancel={this.props.onCancelAddTodo} 
+            <InlineEdit editing={this.props.hasActiveInput}
+                onCancel={this.props.onCancelAddTodo}
                 onEditStart={this.props.onTodoAddStart}
-                className="todo todo-input" 
+                className="todo todo-input"
                 onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.keys)}>Click to add item...</InlineEdit>
         </div>
     }

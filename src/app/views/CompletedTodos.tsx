@@ -89,7 +89,7 @@ export default class CompletedTodos extends React.Component<Props, State> {
                 <div className="column is-scrollable">
                     {todos.map((todo, i) => {
                         return <div key={i} className='column todo-container'>
-                            <div className="seperator"></div>
+                            <div className="separator"></div>
                             <Todo data={todo} readonly={true} />
                         </div>
                     })}
