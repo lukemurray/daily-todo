@@ -76,20 +76,21 @@ export default class CurrentTodos extends React.Component<Props, State> {
     }
 
     private hasChanges(prevTodos: TodoItem[], todos: TodoItem[]) {
-        if (prevTodos != todos || prevTodos.length != todos.length) {
+        if (prevTodos !== todos || prevTodos.length !== todos.length) {
             return true
         }
         for (let i = 0; i < todos.length; i++) {
             const prev = prevTodos[i];
             const todo = todos[i];
             for (const key in prev) {
-                if ((prev as any)[key] != (todo as any)[key]) {
+                if ((prev as any)[key] !== (todo as any)[key]) {
                     return true
                 }
             }
-            if (prev != todo)
+            if (prev !== todo)
                 return true
         }
+        console.log('no change')
         return false
     }
 
@@ -112,9 +113,10 @@ export default class CurrentTodos extends React.Component<Props, State> {
         if (todo.description.trim().length > 0) {
             let todos = this.state.todos
             if (keys.includes(Key.CommandControl)) {
-                todos.splice(0, 0, todo)
+                todos = [todo].concat(todos)
             }
             else if (index !== null) {
+                todos = [...this.state.todos]
                 todos.splice(index, 0, todo)
             }
             else {
