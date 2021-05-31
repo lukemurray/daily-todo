@@ -1,6 +1,5 @@
 const Path = require('path');
 const outPath = Path.join(__dirname, './build');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = (env, argv) => {
@@ -13,7 +12,7 @@ module.exports = (env, argv) => {
         },
         target: 'electron-renderer',
         // Enable sourcemaps for debugging webpack's output.
-        devtool: argv.mode == 'production' ? '' : 'source-map',
+        devtool: argv.mode == 'production' ? false : 'source-map',
         resolve: {
             extensions: [".ts", ".tsx", ".js"]
         },
@@ -24,41 +23,32 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-                { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+                { test: /\.tsx?$/, loader: "ts-loader" },
                 {
-                    test: /\.(scss)|(css)$/,
+                    test: /\.(s[ca]ss)|(css)$/,
                     use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: "css-loader",
-                            options: {
-                                sourceMap: true,
-                            }
-                        },
+                        "style-loader",
+                        "css-loader",
                         "sass-loader"
                     ]
                 },
                 {
                     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    loader: "url-loader?limit=10000&mimetype=application/font-woff"
+                    type: 'asset/inline'
                 },
                 {
                     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    loader: "file-loader"
+                    type: "asset/resource"
                 }
             ]
         },
         plugins: [
-            new MiniCssExtractPlugin({
-                // Options similar to the same options in webpackOptions.output
-                // both options are optional
-                filename: "style.css",
-                chunkFilename: "[name].css"
-            }),
-            new CopyWebpackPlugin([
-                'src/app/index.html',
-                {from: 'src/icons/*', to: 'icons/', flatten: true}
-            ])
+            new CopyWebpackPlugin({
+                patterns: [
+                    'src/app/index.html',
+                    {from: 'src/icons/**/*', to: 'icons/[name][ext]'}
+                ]
+            })
         ]
     }
 };

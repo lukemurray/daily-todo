@@ -1,6 +1,6 @@
 import * as React from 'react'
 import TodoList from '../components/TodoList';
-import TodoManager, { TodoItem, ITodoListData } from '../TodoManager';
+import TodoManager, { TodoItem, ITodoListData, FilePath } from '../TodoManager';
 import Modal from '../components/Modal';
 import { Key } from '../components/InlineEdit';
 
@@ -40,7 +40,7 @@ export default class CurrentTodos extends React.Component<Props, State> {
         this.onTodoEditCancel = this.onTodoEditCancel.bind(this)
         this.onTodoEditClick = this.onTodoEditClick.bind(this)
 
-        this.todoManager = new TodoManager()
+        this.todoManager = new TodoManager(FilePath)
     }
 
     componentDidMount() {
@@ -192,12 +192,12 @@ export default class CurrentTodos extends React.Component<Props, State> {
                 <div className="header-side">
                 </div>
                 <div className="column is-centered">
-                <div>Do it!</div>
+                <div className="app-header">Do it!</div>
                     <div className="todo-list-name">{this.state.activeList}</div>
                 </div>
                 <div className="header-side">
                     <button disabled={!(this.state.previouslyDone && Object.keys(this.state.previouslyDone).length > 0)} title="View previously completed tasks" onClick={this.showPastTodos}><i className="far fa-calendar-alt"></i></button>
-                    <button title="Clear on completed tasks" onClick={this.clearDone}><i className="fas fa-check"></i></button>
+                    <button title="Clear all completed tasks" onClick={this.clearDone}><i className="fas fa-check"></i></button>
                 </div>
             </div>
             <TodoList todos={this.state.todos}

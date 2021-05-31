@@ -1,5 +1,5 @@
 import * as React from 'react'
-import TodoManager, { TodoItem, ITodoListData } from '../TodoManager';
+import TodoManager, { TodoItem, ITodoListData, FilePath } from '../TodoManager';
 import Todo from '../components/Todo';
 
 interface State {
@@ -29,7 +29,7 @@ export default class CompletedTodos extends React.Component<Props, State> {
             selectedKey: ''
         }
 
-        this.todoManager = new TodoManager()
+        this.todoManager = new TodoManager(FilePath)
 
         this.gotoActive = this.gotoActive.bind(this)
         this.step = this.step.bind(this)
@@ -82,7 +82,7 @@ export default class CompletedTodos extends React.Component<Props, State> {
                     <button className="link" disabled={!hasNext} title="Next completed tasks" onClick={() => this.step(index + 1)}><i className="fas fa-chevron-right"></i></button>
                 </div>
                 <div className="header-side">
-                    <button title="Clear on completed tasks" onClick={this.gotoActive}><i className="fas fa-times"></i></button>
+                    <button title="View current tasks" onClick={this.gotoActive}><i className="fas fa-times"></i></button>
                 </div>
             </div>
             <div className="column is-full todos">

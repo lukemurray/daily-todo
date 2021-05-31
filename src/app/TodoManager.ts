@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 
-const FilePath = './todos.json';
+export const FilePath = './todos.json';
 
 export interface TodoItem {
     done?: Date
@@ -23,10 +23,16 @@ class TodoListData implements ITodoListData {
 }
 
 export default class TodoManager {
-    public saveTodoData(listName:string, data: ITodoListData): void {
+    private filePath = './todos.json'
+
+    constructor(filePath: string) {
+        this.filePath = filePath
+    }
+
+    public saveTodoData(listName: string, data: ITodoListData): void {
         var allData = null
-        if (fs.existsSync(FilePath)) {
-            let file = fs.readFileSync(FilePath, 'utf8')
+        if (fs.existsSync(this.filePath)) {
+            let file = fs.readFileSync(this.filePath, 'utf8')
             if (file) {
                 allData = JSON.parse(file)
             }
@@ -34,12 +40,12 @@ export default class TodoManager {
         allData = Object.assign({}, allData)
         allData[listName] = data
 
-        fs.writeFileSync(FilePath, JSON.stringify(allData))
+        fs.writeFileSync(this.filePath, JSON.stringify(allData))
     }
 
     public getTodoData(listName:string): ITodoListData {
-        if (fs.existsSync(FilePath)) {
-            let file = fs.readFileSync(FilePath, 'utf8')
+        if (fs.existsSync(this.filePath)) {
+            let file = fs.readFileSync(this.filePath, 'utf8')
             if (file) {
                 let data: ITodoListData = JSON.parse(file)[listName]
                 return data
@@ -49,8 +55,8 @@ export default class TodoManager {
     }
 
     public getListNames(): string[] {
-        if (fs.existsSync(FilePath)) {
-            let file = fs.readFileSync(FilePath, 'utf8')
+        if (fs.existsSync(this.filePath)) {
+            let file = fs.readFileSync(this.filePath, 'utf8')
             if (file) {
                 let data = Object.keys(JSON.parse(file))
                 return data

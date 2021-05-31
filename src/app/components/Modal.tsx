@@ -38,7 +38,7 @@ export default class Modal extends React.Component<Props> {
                 {this.props.children}
                 <div className="buttons">
                     <button ref={this.okRef} onClick={this.props.onOk}>Yes</button>
-                    <button onClick={this.props.onCancel}>Cancel</button>
+                    <button onClick={this.props.onCancel}>No</button>
                 </div>
             </div>
         </div>
