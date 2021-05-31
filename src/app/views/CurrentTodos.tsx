@@ -69,7 +69,7 @@ export default class CurrentTodos extends React.Component<Props, State> {
     }
 
     private onKeyPress(event: KeyboardEvent) {
-        if (event.code == 'Space' && !this.state.hasActiveInput && !this.state.editingIndex) {
+        if (event.key == 't' && event.ctrlKey && !this.state.hasActiveInput && !this.state.editingIndex) {
             this.setState({hasActiveInput: true})
             event.preventDefault()
         }
@@ -90,7 +90,6 @@ export default class CurrentTodos extends React.Component<Props, State> {
             if (prev !== todo)
                 return true
         }
-        console.log('no change')
         return false
     }
 
