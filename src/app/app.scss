@@ -222,7 +222,8 @@ a, a:visited, a:active {
 
         &.can-insert {
             &:hover {
-                background-color: #8de995;
+                background-color: #fff;
+                border: 1px solid $separator-color;
             }
         }
     }
