@@ -14,7 +14,7 @@ function createWindow(tray: Tray) {
 }
 
 app.on('ready', () => {
-    tray = new Tray(process.env.APP_URL ? `${__dirname}/../src/icons/tray.png` : `${__dirname}/icons/tray.png`)
+    tray = new Tray(process.env.APP_URL ? `${__dirname}/../src/icons/trayTemplate.png` : `${__dirname}/icons/trayTemplate.png`)
     window = createWindow(tray)
     tray.on('click', (e) => {
         window!.show()
