@@ -17,8 +17,10 @@ module.exports = (env, argv) => {
             extensions: [".ts", ".tsx", ".js"]
         },
         devServer: {
-            contentBase: './build',
-            index: 'index.html',
+            static: {
+                directory: './build',
+                serveIndex: true,
+            }
         },
         module: {
             rules: [
