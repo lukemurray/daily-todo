@@ -34,7 +34,7 @@ export default class TodoList extends React.Component<Props> {
     }
 
     render() {
-        return <div className="column is-full todos">
+        return <div className="column is-full todos is-scrollable">
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) =>

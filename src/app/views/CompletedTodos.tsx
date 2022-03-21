@@ -85,8 +85,8 @@ export default class CompletedTodos extends React.Component<Props, State> {
                     <button title="View current tasks" onClick={this.gotoActive}><i className="fas fa-times"></i></button>
                 </div>
             </div>
-            <div className="column is-full todos">
-                <div className="column is-scrollable">
+            <div className="column is-full todos is-scrollable">
+                <div className="column">
                     {todos.map((todo, i) => {
                         return <div key={i} className='column todo-container'>
                             <div className="separator"></div>
