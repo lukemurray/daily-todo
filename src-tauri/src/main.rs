@@ -17,8 +17,9 @@ fn main() {
               size: _,
               ..
             } => {
-                app.get_window("main").unwrap().show().unwrap();
-                println!("system tray received a left click");
+                let window = app.get_window("main").unwrap();
+                window.show().unwrap();
+                window.set_focus().unwrap();
             }
             _ => {}
         })
