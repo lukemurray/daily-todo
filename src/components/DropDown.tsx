@@ -10,7 +10,7 @@ export const DropDown = (props: Props) => {
 
     useEffect(() => {
         const listener = (event: MouseEvent) => {
-            if (event.target instanceof Node && !event.target.closest('.dropdown'))
+            if (event.target instanceof Element && !(event.target as Element).closest('.dropdown'))
                 setShowDropDown(false)
         }
 
