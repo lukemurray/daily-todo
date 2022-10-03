@@ -1,8 +1,9 @@
-import * as React from "react";
+import React from "react";
 
 interface Props {
     onCancel: () => void
     onOk: () => void
+    children: React.ReactNode
 }
 
 export default class Modal extends React.Component<Props> {

@@ -1,0 +1,53 @@
+#root {
+  flex-grow: 1;
+}
+
+html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-size: 16px;
+}
+
+div {
+  display: flex;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.column.is-centered {
+  align-items: center;
+}
+
+.column.is-full, .row.is-full {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.column.is-thin, .row.is-thin {
+  flex-shrink: 1;
+}
+
+.is-scrollable {
+  overflow-y: auto;
+}
+
+.has-space-between {
+  justify-content: space-between;
+}

@@ -1,33 +1,7 @@
 @import './theme.scss';
 
-html {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-}
-
-body {
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
-    flex-grow: 1;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    font-size: 16px;
-}
-
 .app-header {
     font-weight: 600;
-}
-
-#appContent {
-    flex-grow: 1;
-    width: 100%;
-}
-
-div {
-    display: flex;
 }
 
 .is-action {
@@ -75,37 +49,6 @@ a, a:visited, a:active {
         background: $action-hover-background;
         border-radius: 2px;
     }
-}
-
-.row {
-    flex-direction: row;
-}
-
-.column {
-    flex-direction: column;
-
-    &.is-centered {
-        align-items: center;
-    }
-}
-
-.column, .row {
-    &.is-full {
-        flex-grow: 1;
-        width: 100%;
-    }
-
-    &.is-thin {
-        flex-shrink: 1;
-    }
-}
-
-.is-scrollable {
-    overflow-y: auto;
-}
-
-.has-space-between {
-    justify-content: space-between;
 }
 
 .header {

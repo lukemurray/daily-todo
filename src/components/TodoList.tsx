@@ -1,5 +1,5 @@
-import * as React from 'react'
-import Todo from './Todo';
+import React from 'react'
+import {Todo} from './Todo';
 import InlineEdit, { Key } from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { TodoItem } from '../TodoManager';
@@ -38,7 +38,7 @@ export default class TodoList extends React.Component<Props> {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) =>
-                        <div className="column is-scrollable" ref={provided.innerRef}>
+                        <div className="column is-scrollable" {...provided.droppableProps} ref={provided.innerRef}>
                             {this.props.todos.map((todo, index) => {
                                 return <Draggable key={todo.description} draggableId={todo.description} index={index}>
                                 {(provided, snapshot) =>

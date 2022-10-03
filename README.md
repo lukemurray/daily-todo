@@ -1,5 +1,5 @@
 # Daily Todo
-Super simple todo application for the desktop (currently?). Yes it is written with Electron.
+Super simple todo application for the desktop (currently?).
 
 ## Why?
 Maybe something else exists, but I couldn't find anything that worked the way I wanted. I tried everything I found, Trello, Asana, Todoist, etc. They all end up doing too much, I get why, that's where there is possible money. Daily Todo just lets me
@@ -15,5 +15,5 @@ Maybe something else exists, but I couldn't find anything that worked the way I 
 Currently
 - Clone the repo
 - `npm i`
-- `npm start`
+- `npm run tauri dev`
 - _do_
