@@ -4,6 +4,8 @@ interface Props {
     onCancel: () => void
     onOk: () => void
     children: React.ReactNode
+    okText?: string
+    noText?: string
 }
 
 export default class Modal extends React.Component<Props> {
@@ -38,8 +40,8 @@ export default class Modal extends React.Component<Props> {
             <div className="content">
                 {this.props.children}
                 <div className="buttons">
-                    <button ref={this.okRef} onClick={this.props.onOk}>Yes</button>
-                    <button onClick={this.props.onCancel}>No</button>
+                    <button ref={this.okRef} onClick={this.props.onOk}>{this.props.okText ?? 'Yes'}</button>
+                    <button onClick={this.props.onCancel}>{this.props.noText ?? 'No'}</button>
                 </div>
             </div>
         </div>

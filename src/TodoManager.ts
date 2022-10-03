@@ -59,4 +59,15 @@ export default class TodoManager {
         }
         throw new Error('No data file found')
     }
+
+    public async addTodoList(name: string) {
+        const file = await this.readFile()
+        if (file) {
+            let data = JSON.parse(file)
+            data[name] = {
+                currentTodos: []
+            } 
+            await writeTextFile(this.filePath, JSON.stringify(data), { dir: BaseDirectory.Home })
+        }
+    }
 }

@@ -4,6 +4,8 @@ import Modal from '../components/Modal';
 import { Key } from '../components/InlineEdit';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { DropDown } from '../components/DropDown';
+import { useNewListModal } from '../components/NewListModal';
 
 const todoManager: TodoManager = new TodoManager(FilePath)
 
@@ -15,12 +17,23 @@ export const CurrentTodos = () => {
     const [editingIndex, setEditingIndex] = useState<number>()
     const [previouslyDone, setPreviouslyDone] = useState<{[key: string]: TodoItem[]}>({})
     const [showDelete, setShowDelete] = useState<TodoItem | null>(null)
+    const [todoLists, setTodoLists] = useState<string[]>([])
+
+    const addNewList = async (name: string) => {
+        await todoManager.addTodoList(name)
+        setActiveList(name)
+        setTodoLists(items => items.concat([name]))
+        showNewListModal(false)
+    }
+
+    const [newListModal, showNewListModal] = useNewListModal({onCreate: addNewList})
 
     // load Todos and register keypress
     useEffect(() => {
         const loadLists = async () => {
             let todoLists = await todoManager.getListNames()
             setActiveList(todoLists.length > 0 ? todoLists[0] : 'Todo')
+            setTodoLists(todoLists)
         }
         loadLists()
 
@@ -163,7 +176,10 @@ export const CurrentTodos = () => {
             </div>
             <div className="column is-centered">
             <div className="app-header">Do it!</div>
-                <div className="todo-list-name">{activeList}</div>
+                <DropDown element={<div className="todo-list-name">{activeList}</div>}>
+                    {todoLists.map(list => <div className="dropdown-item" onClick={() => setActiveList(list)}>{list}</div>)}
+                    <div className="dropdown-item" onClick={() => showNewListModal()}>New list...</div>
+                </DropDown>
             </div>
             <div className="header-side">
                 <button disabled={!(previouslyDone && Object.keys(previouslyDone).length > 0)} title="View previously completed tasks" onClick={showPastTodos}><i className="far fa-calendar-alt"></i></button>
@@ -185,5 +201,6 @@ export const CurrentTodos = () => {
         {showDelete ? <Modal onCancel={() => setShowDelete(null)} onOk={onTodoDeleteConfirmed}>
             Delete '{showDelete.description}'?
         </Modal> : null}
+        {newListModal}
     </div>
 }
