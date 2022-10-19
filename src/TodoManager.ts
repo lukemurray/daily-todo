@@ -2,9 +2,15 @@ import { exists, readTextFile, writeTextFile, BaseDirectory } from '@tauri-apps/
 
 export const FilePath = 'todos.json';
 
+export enum TodoItemType {
+    Todo,
+    Section,
+}
+
 export interface TodoItem {
     done?: Date
     description: string
+    type: TodoItemType
 }
 
 export interface ITodoListData {

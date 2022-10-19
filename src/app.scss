@@ -151,6 +151,18 @@ a, a:visited, a:active {
             flex-shrink: 1;
             overflow-x: scroll;
         }
+
+        &.section {
+            padding: .5rem 0;
+            padding-left: .7rem;
+            font-weight: 600;
+            color: #4d4d4d;
+            background: $background-primary-hover;
+
+            &:hover {
+                cursor: grab;
+            }
+        }
     }
 
     .separator {

@@ -1,11 +1,12 @@
 import TodoList from '../components/TodoList';
-import TodoManager, { TodoItem, FilePath, ITodoListData } from '../TodoManager';
+import TodoManager, { TodoItem, FilePath, ITodoListData, TodoItemType } from '../TodoManager';
 import Modal from '../components/Modal';
 import { Key } from '../components/InlineEdit';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DropDown } from '../components/DropDown';
 import { useNewListModal } from '../components/NewListModal';
+import { useNewSectionModal } from '../components/NewSectionModal';
 
 const todoManager: TodoManager = new TodoManager(FilePath)
 
@@ -26,7 +27,13 @@ export const CurrentTodos = () => {
         showNewListModal(false)
     }
 
+    const addNewSection = (name: string) => {
+        onNewTodo({type: TodoItemType.Section, description: name}, [], 0)
+        showNewSectionModal(false)
+    }
+
     const [newListModal, showNewListModal] = useNewListModal({onCreate: addNewList})
+    const [newSectionModal, showNewSectionModal] = useNewSectionModal({onCreate: addNewSection})
 
     // load Todos and register keypress
     useEffect(() => {
@@ -173,6 +180,7 @@ export const CurrentTodos = () => {
     return <div className="column is-full">
         <div className="row header">
             <div className="header-side">
+            <button title="Add section" onClick={() => showNewSectionModal()}><i className="fas fa-plus"></i></button>
             </div>
             <div className="column is-centered">
             <div className="app-header">Do it!</div>
@@ -202,5 +210,6 @@ export const CurrentTodos = () => {
             Delete '{showDelete.description}'?
         </Modal> : null}
         {newListModal}
+        {newSectionModal}
     </div>
 }

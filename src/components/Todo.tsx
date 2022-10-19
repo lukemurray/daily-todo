@@ -1,5 +1,5 @@
 import React from 'react'
-import { TodoItem } from '../TodoManager';
+import { TodoItem, TodoItemType } from '../TodoManager';
 import InlineEdit, { Key } from './InlineEdit';
 
 interface Props {
@@ -59,8 +59,11 @@ export const Todo = (props: Props) => {
     if (props.edit) {
         todoData = <InlineEdit editing={true} onCancel={props.onEditCancel!} className="row is-full" value={props.data.description} onComplete={onEditComplete} />
     }
-    return <div className={`row todo ${props.className} ${props.data.done && !props.readonly ? 'done' : ''} ${props.readonly ? 'readonly' : ''}`} onMouseOver={onHover} onMouseLeave={onHoverStop} onClick={onToggleDone}>
-        <div className="handle">{hover ? '||' : ''}</div>
+
+    const isSection = props.data.type == TodoItemType.Section
+
+    return <div className={`row todo ${isSection ? 'section' : ''} ${props.className} ${props.data.done && !props.readonly ? 'done' : ''} ${props.readonly ? 'readonly' : ''}`} onMouseOver={onHover} onMouseLeave={onHoverStop} onClick={isSection ? undefined : onToggleDone}>
+        {isSection ? null : <div className="handle">{hover ? '||' : ''}</div>}
         <div className="row is-full todo-description">
             {todoData}
         </div>

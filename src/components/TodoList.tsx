@@ -2,7 +2,7 @@ import React from 'react'
 import {Todo} from './Todo';
 import InlineEdit, { Key } from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { TodoItem } from '../TodoManager';
+import { TodoItem, TodoItemType } from '../TodoManager';
 import { TodoSeparator } from './TodoSeparator';
 
 interface Props {
@@ -65,7 +65,7 @@ export default class TodoList extends React.Component<Props> {
                 onCancel={this.props.onCancelAddTodo}
                 onEditStart={this.props.onTodoAddStart}
                 className="todo todo-input"
-                onComplete={e => this.props.onNewTodo({description: e.value, done: undefined}, e.keys)}>Click to add item...</InlineEdit>
+                onComplete={e => this.props.onNewTodo({ description: e.value, done: undefined, type: TodoItemType.Todo }, e.keys)}>Click to add item...</InlineEdit>
         </div>
     }
 }
