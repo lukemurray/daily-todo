@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react';
-import { TodoItem } from '../TodoManager';
+import { TodoItem, TodoItemType } from '../TodoManager';
 import InlineEdit, { Key } from './InlineEdit';
 
 interface Props {
@@ -15,7 +15,7 @@ export const TodoSeparator: React.FC<Props> = (props) => {
             onCancel={() => setIsAdding(false)}
             className="todo todo-input"
             onComplete={e => {
-                props.onNewTodo({description: e.value, done: undefined}, e.keys)
+                props.onNewTodo({ description: e.value, done: undefined, type: TodoItemType.Todo }, e.keys)
                 setIsAdding(false)
             }}></InlineEdit>
 
