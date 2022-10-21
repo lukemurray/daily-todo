@@ -5,8 +5,7 @@ import { Key } from '../components/InlineEdit';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DropDown } from '../components/DropDown';
-import { useNewListModal } from '../components/NewListModal';
-import { useNewSectionModal } from '../components/NewSectionModal';
+import { useInputModal } from '../components/useInputModal';
 
 const todoManager: TodoManager = new TodoManager(FilePath)
 
@@ -32,8 +31,8 @@ export const CurrentTodos = () => {
         showNewSectionModal(false)
     }
 
-    const [newListModal, showNewListModal] = useNewListModal({onCreate: addNewList})
-    const [newSectionModal, showNewSectionModal] = useNewSectionModal({onCreate: addNewSection})
+    const [newListModal, showNewListModal] = useInputModal({onCreate: addNewList, description: "Enter list name:"})
+    const [newSectionModal, showNewSectionModal] = useInputModal({onCreate: addNewSection, description: "Enter section name:"})
 
     // load Todos and register keypress
     useEffect(() => {

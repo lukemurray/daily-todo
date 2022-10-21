@@ -3,15 +3,16 @@ import { useEffect, useState } from 'react';
 
 interface Props {
     onCreate: (name: string) => void | Promise<void>
+    description: string
 }
 
-export const useNewListModal = (props: Props): [JSX.Element | null, (show?: boolean) => void] => {
+export const useInputModal = (props: Props): [JSX.Element | null, (show?: boolean) => void] => {
     const [listName, setListName] = useState('');
 
     const dialog = <Modal onCancel={() => setModal(null)} onOk={() => props.onCreate(listName)} okText='Create' noText='Cancel'>
         <div className='column'>
             <div>
-                Enter list name:
+                {props.description}
             </div>
             <div>
                 <input type="text" value={listName} onChange={e => setListName(e.target.value)} />
