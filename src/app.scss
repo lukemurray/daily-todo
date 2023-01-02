@@ -149,7 +149,7 @@ a, a:visited, a:active {
             white-space: nowrap;
             flex-grow: 0;
             flex-shrink: 1;
-            overflow-x: scroll;
+            overflow-x: auto;
         }
 
         &.section {
