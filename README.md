@@ -13,6 +13,8 @@ Maybe something else exists, but I couldn't find anything that worked the way I 
 
 # Running
 Currently
+- Install NodeJS (v20+)
+- Install Rust (v1.73+)
 - Clone the repo
 - `npm i`
 - `npm run tauri dev`

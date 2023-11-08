@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DropDown } from '../components/DropDown';
 import { useInputModal } from '../components/useInputModal';
+import { v4 as uuidv4 } from 'uuid';
 
 const todoManager: TodoManager = new TodoManager(FilePath)
 
@@ -27,7 +28,7 @@ export const CurrentTodos = () => {
     }
 
     const addNewSection = (name: string) => {
-        onNewTodo({type: TodoItemType.Section, description: name}, [], 0)
+        onNewTodo({type: TodoItemType.Section, description: name, id: uuidv4()}, [], 0)
         showNewSectionModal(false)
     }
 
@@ -84,7 +85,7 @@ export const CurrentTodos = () => {
             return
         }
 
-        const matchTodoIdx = todos.findIndex(t => t.description == todo.description)
+        const matchTodoIdx = todos.findIndex(t => t.id == todo.id)
         if (matchTodoIdx > -1) {
             let todosNew = todos.concat([])
             let matchTodo = Object.assign({}, todosNew[matchTodoIdx])
@@ -139,7 +140,7 @@ export const CurrentTodos = () => {
     }
 
     const onTodoEdited = (prevTodo: TodoItem, updatedTodo: TodoItem) => {
-        const matchTodoIdx = todos.findIndex(t => t.description == prevTodo.description)
+        const matchTodoIdx = todos.findIndex(t => t.id == prevTodo.id)
         if (matchTodoIdx > -1) {
             let todosNew = todos.concat([])
             todosNew.splice(matchTodoIdx, 1, updatedTodo)
@@ -153,7 +154,7 @@ export const CurrentTodos = () => {
     }
 
     const onTodoDeleteConfirmed = () => {
-        const matchTodoIdx = todos.findIndex(t => t.description == showDelete!.description)
+        const matchTodoIdx = todos.findIndex(t => t.id == showDelete!.id)
         if (matchTodoIdx > -1) {
             let todosNew = todos.concat([])
             todosNew.splice(matchTodoIdx, 1)
@@ -182,8 +183,7 @@ export const CurrentTodos = () => {
             <button title="Add section" onClick={() => showNewSectionModal()}><i className="fas fa-plus"></i></button>
             </div>
             <div className="column is-centered">
-            <div className="app-header">Do it!</div>
-                <DropDown element={<div className="todo-list-name">{activeList}</div>}>
+                <DropDown element={<div className="app-header">{activeList}</div>}>
                     {todoLists.map(list => <div className="dropdown-item" onClick={() => setActiveList(list)}>{list}</div>)}
                     <div className="dropdown-item" onClick={() => showNewListModal()}>New list...</div>
                 </DropDown>

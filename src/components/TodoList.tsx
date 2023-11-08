@@ -4,6 +4,7 @@ import InlineEdit, { Key } from './InlineEdit';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { TodoItem, TodoItemType } from '../TodoManager';
 import { TodoSeparator } from './TodoSeparator';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
     todos: TodoItem[]
@@ -40,7 +41,7 @@ export default class TodoList extends React.Component<Props> {
                     {(provided) =>
                         <div className="column is-scrollable" {...provided.droppableProps} ref={provided.innerRef}>
                             {this.props.todos.map((todo, index) => {
-                                return <Draggable key={todo.description} draggableId={todo.description} index={index}>
+                                return <Draggable key={todo.id} draggableId={todo.id} index={index}>
                                 {(provided, snapshot) =>
                                     <div ref={provided.innerRef}
                                     {...provided.draggableProps}
@@ -65,7 +66,7 @@ export default class TodoList extends React.Component<Props> {
                 onCancel={this.props.onCancelAddTodo}
                 onEditStart={this.props.onTodoAddStart}
                 className="todo todo-input"
-                onComplete={e => this.props.onNewTodo({ description: e.value, done: undefined, type: TodoItemType.Todo }, e.keys)}>Click to add item...</InlineEdit>
+                onComplete={e => this.props.onNewTodo({ description: e.value, done: undefined, type: TodoItemType.Todo, id: uuidv4() }, e.keys)}>Click to add item...</InlineEdit>
         </div>
     }
 }
