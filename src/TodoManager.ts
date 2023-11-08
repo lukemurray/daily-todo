@@ -17,7 +17,6 @@ export interface TodoItem {
 }
 
 export interface ITodoListData {
-    __version: number
     currentTodos: TodoItem[]
     previouslyDone?: {[key: string]: TodoItem[]}
 }
